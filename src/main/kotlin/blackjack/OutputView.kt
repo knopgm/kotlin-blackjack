@@ -13,9 +13,16 @@ class OutputView {
         println(FIRST_TURN_CARDS.format(playersNames.joinToString(",")))
     }
 
-    fun printFirstTurnCards (participant: Participant) {
-        val cards = participant.hand.toString()
-        println(DISPLAY_HANDS.format(participant.name, cards))
+    fun printDealerFirstTurnCards (dealer: Dealer) {
+        val cards = dealer.hand.toString()
+        println(DISPLAY_HANDS.format(dealer.name, cards))
+    }
+
+    fun printPlayersFirstTurnCards (players: List<Player>) {
+        players.forEach { player ->
+            val cards = player.hand.toString()
+            println(DISPLAY_HANDS.format(player.name, cards))
+        }
     }
 
     fun printCurrentCardsOfOnePlayer (player: Player) {
@@ -27,15 +34,26 @@ class OutputView {
         println(DISPLAY_HANDS.format(dealer.name, cards))
     }
 
-    fun printFinalScores (participant: Participant) {
-        val cards = participant.hand.toString()
-        val score = participant.sumCards()
-        println(DISPLAY_FINAL_HAND.format(participant.name, cards, score))
+    fun printDealerFinalScore (dealer: Dealer) {
+        val cards = dealer.hand.toString()
+        val score = dealer.sumCards()
+        println()
+        println(DISPLAY_FINAL_HAND.format(dealer.name, cards, score))
     }
 
-    fun printFinalPlayerResult (player: Player) {
-        val result = player.hand.checkWinOrLose()
-        println(DISPLAY_FINAL_PLAYER_RESULTS.format(player.name, result))
+    fun printPlayersFinalScore (players: List<Player>) {
+        players.forEach { player ->
+            val cards = player.hand.toString()
+            val score = player.sumCards()
+            println(DISPLAY_FINAL_HAND.format(player.name, cards, score))
+        }
+    }
+
+    fun printFinalPlayerResult (players: List<Player>) {
+        players.forEach { player ->
+            val result = player.hand.checkWinOrLose()
+            println(DISPLAY_FINAL_PLAYER_RESULTS.format(player.name, result))
+        }
     }
 
     fun printFinalDealerResults (dealer: Dealer, players: List<Player>) {
@@ -44,6 +62,8 @@ class OutputView {
         players.forEach { player -> if(player.hand.checkWinOrLose() == "Lose") {
             countWins++
         } else { countLosses++ }}
+        println()
+        println("## Final Results ##")
         println(DISPLAY_FINAL_DEALER_RESULTS.format(dealer.name, countWins, countLosses))
     }
 
